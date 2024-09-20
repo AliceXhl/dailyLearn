@@ -1,1 +1,20 @@
-
+程序运行时，会从主内存中加载到各自的内存空间中（感觉就像一家人，各自有各自的房间，私有物品，放在自己房间，公有物品，放在客厅）；
+流程：
+    1、为了提高程序运行速度；程序一运行，便将所有生成一个副本
+    2、运行中，程序会优先从自己副本中获取，若副本中不存在，加载主内存中的值到副本，再运行
+所以，我们的变量在程序中变化，并不会影响主内存中的值，这就和并发应该有点关系了
+注：实际应用中，我们可能会存储很多值，但为了方便，我们应设置一个对象
+代码展示：
+threadlocal中存储对象展示：id, name, school
+@Data
+public class threadData {
+  int id; 
+  String name;
+  School school;
+  public threadData(){}
+}
+ThreadLocal<threadData> data = ThreadLocal.withInitial(() -> {
+  new threadData(1, "alice", new School("CQ"))
+});
+ThreadData data1 = data.get();
+data1.getName();  data1.getId();  data1.getSchool().getName();
